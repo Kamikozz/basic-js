@@ -1,34 +1,33 @@
 module.exports = function repeater(str, options) {
-    // if str & addition is not strings -> make them strings
-    if (typeof str !== 'string' || (options && options.addition && typeof options.addition !== 'string')) {
-        str = String(str);
-        options.addition = String(options.addition);
-    }
-
+    // if options are absent -> create them
     if (!options) options = {};
 
-    // give default values if any of properties is absent
-    if (!options.hasOwnProperty('repeatTimes') || !options.repeatTimes)
-        options.repeatTimes = 1;
-    if (!options.hasOwnProperty('separator') | !options.separator)
-        options.separator = '+';
-    if (!options.hasOwnProperty('addition') || !options.addition)
-        options.addition = '';
-    if (!options.hasOwnProperty('additionRepeatTimes') || !options.additionRepeatTimes)
-        options.additionRepeatTimes = 1;
-    if (!options.hasOwnProperty('additionSeparator') || !options.additionSeparator)
-        options.additionSeparator = '|';
+    // if str is not a string -> make it string
+    if (typeof str !== 'string') str = String(str);
+
+    // if addition presents in options
+    // & addition is not a string -> make it string
+    if (options.hasOwnProperty('addition') &&
+        typeof options.addition !== 'string')
+        options.addition = String(options.addition);
+
+    // give default values if any of properties are absent
+    if (!options.repeatTimes) options.repeatTimes = 1;
+    if (!options.separator) options.separator = '+';
+    if (!options.addition) options.addition = '';
+    if (!options.additionRepeatTimes) options.additionRepeatTimes = 1;
+    if (!options.additionSeparator) options.additionSeparator = '|';
 
     let result = '';
     for (let i = 0; i < options.repeatTimes; i++) {
-        result += str;
+        result += str; // add str string
         for (let j = 0; j < options.additionRepeatTimes; j++) {
-            result += options.addition;
-            if (j + 1 !== options.additionRepeatTimes)
-                result += options.additionSeparator;
+            result += options.addition; // add addition string
+            if (j + 1 !== options.additionRepeatTimes) // check if not an end
+                result += options.additionSeparator; // add addition separator
         }
-        if (i + 1 !== options.repeatTimes)
-            result += options.separator;
+        if (i + 1 !== options.repeatTimes) // check if not an end
+            result += options.separator; // add separator
     }
     return result;
 };
